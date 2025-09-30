@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,45 +29,57 @@
       align-items:center;
       justify-content:center;
       padding:32px;
-    }.particles{position:fixed;inset:0;pointer-events:none;overflow:hidden}
-.particle{position:absolute;border-radius:50%;opacity:0.12;background:linear-gradient(135deg,var(--accent),transparent);animation:float 12s linear infinite}
-@keyframes float{0%{transform:translateY(0) scale(1)}50%{transform:translateY(-120vh) scale(1.8)}100%{transform:translateY(0) scale(1)}}
+    }
+    .particles{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+    .particle{position:absolute;border-radius:50%;opacity:0.12;background:linear-gradient(135deg,var(--accent),transparent);animation:float 12s linear infinite}
+    @keyframes float{0%{transform:translateY(0) scale(1)}50%{transform:translateY(-120vh) scale(1.8)}100%{transform:translateY(0) scale(1)}}
 
-.wrap{max-width:980px;width:100%;display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start}
-@media (max-width:920px){.wrap{grid-template-columns:1fr;}}
+    .wrap{max-width:980px;width:100%;display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start}
+    @media (max-width:920px){.wrap{grid-template-columns:1fr;}}
 
-.panel{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));border-radius:18px;padding:28px;backdrop-filter: blur(6px);box-shadow: 0 10px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.04)}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));border-radius:18px;padding:28px;backdrop-filter: blur(6px);box-shadow: 0 10px 30px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.04)}
 
-h1{margin:0 0 8px 0;font-weight:700;font-size:28px}
-.meta{color:var(--muted);font-size:14px;margin-bottom:16px}
+    h1{margin:0 0 8px 0;font-weight:700;font-size:28px}
+    .meta{color:var(--muted);font-size:14px;margin-bottom:16px}
 
-.story{line-height:1.9;font-size:18px}
-.story p{margin:12px 0}
+    .story{line-height:1.9;font-size:18px}
+    .story p{margin:12px 0}
 
-.side{display:flex;flex-direction:column;gap:18px;position:sticky;top:20px;height:max-content}
-.author{display:flex;gap:12px;align-items:center}
-.avatar{width:72px;height:72px;border-radius:14px;background:linear-gradient(135deg,var(--accent),transparent);display:flex;align-items:center;justify-content:center;color:#001; font-weight:700}
-.btn{cursor:pointer;display:inline-block;padding:10px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));font-weight:600}
-.lang-toggle{display:flex;gap:10px}
+    .side{display:flex;flex-direction:column;gap:18px;position:sticky;top:20px;height:max-content}
+    .author{display:flex;gap:12px;align-items:center}
+    .avatar{width:72px;height:72px;border-radius:14px;background:linear-gradient(135deg,var(--accent),transparent);display:flex;align-items:center;justify-content:center;color:#001; font-weight:700}
+    .btn{cursor:pointer;display:inline-block;padding:10px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));font-weight:600}
+    .lang-toggle{display:flex;gap:10px}
 
-.title-underline{display:inline-block;height:6px;background:linear-gradient(90deg,var(--accent),transparent);border-radius:4px;width:60%;transform-origin:left;background-size:200% 100%;animation:wave 4s linear infinite}
-@keyframes wave{0%{background-position:0% 0%}100%{background-position:200% 0%}}
+    .title-underline{display:inline-block;height:6px;background:linear-gradient(90deg,var(--accent),transparent);border-radius:4px;width:60%;transform-origin:left;background-size:200% 100%;animation:wave 4s linear infinite}
+    @keyframes wave{0%{background-position:0% 0%}100%{background-position:200% 0%}}
 
-footer{margin-top:20px;color:var(--muted);font-size:13px}
+    footer{margin-top:20px;color:var(--muted);font-size:13px}
 
-.story-card{position:relative;min-height:260px}
-.flip-enter{animation:flipIn .6s forwards}
-.flip-exit{animation:flipOut .5s forwards}
-@keyframes flipIn{0%{opacity:0;transform:rotateY(90deg)}100%{opacity:1;transform:rotateY(0deg)}}
-@keyframes flipOut{0%{opacity:1;transform:rotateY(0deg)}100%{opacity:0;transform:rotateY(-90deg)}}
+    /* صندوق القصة مع تمرير النص وارتفاع ديناميكي */
+    .story-card{
+      position: relative;
+      height: calc(100vh - 100px); /* ارتفاع ديناميكي حسب الشاشة */
+      overflow-y: auto;
+      padding-right: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) rgba(255,255,255,0.1);
+    }
+    .story-card::-webkit-scrollbar { width: 8px; }
+    .story-card::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 8px; }
+    .story-card::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 8px; }
 
-.visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+    .flip-enter{animation:flipIn .6s forwards}
+    .flip-exit{animation:flipOut .5s forwards}
+    @keyframes flipIn{0%{opacity:0;transform:rotateY(90deg)}100%{opacity:1;transform:rotateY(0deg)}}
+    @keyframes flipOut{0%{opacity:1;transform:rotateY(0deg)}100%{opacity:0;transform:rotateY(-90deg)}}
 
-/* زر للعودة للأعلى */
-#backToTop{
-  position:fixed;bottom:30px;left:30px;z-index:1000;
-  background:var(--accent);color:#000;padding:10px 16px;border:none;border-radius:50%;cursor:pointer;font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,0.4);display:none;
-}
+    .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
+
+    #backToTop{
+      position:fixed;bottom:30px;left:30px;z-index:1000;
+      background:var(--accent);color:#000;padding:10px 16px;border:none;border-radius:50%;cursor:pointer;font-weight:700;box-shadow:0 4px 12px rgba(0,0,0,0.4);display:none;
+    }
 
   </style>
 </head>
@@ -75,66 +88,72 @@ footer{margin-top:20px;color:var(--muted);font-size:13px}
     <div class="particle" style="width:360px;height:360px;left:10%;bottom:-20%;animation-delay:0s"></div>
     <div class="particle" style="width:220px;height:220px;left:80%;bottom:-10%;animation-delay:3s;opacity:0.08"></div>
     <div class="particle" style="width:120px;height:120px;left:50%;bottom:-5%;animation-delay:6s;opacity:0.06"></div>
-  </div>  <main class="wrap" id="app">
+  </div>  
+
+  <main class="wrap" id="app">
     <section class="panel">
       <h1 id="title">رحلة كيان <span class="title-underline"></span></h1>
-      <div class="meta">الكاتب: <strong>حيدر أحمد جواد</strong> — القصة افتراضية مؤلّفة</div><div class="story-card panel" id="storyCard" aria-live="polite">
-    <article class="story" id="storyArabic">
-      <p>في بلدةٍ صغيرةٍ أحاطت بها تلالٌ مغطاةٌ بالزيتون، عاش فتىٌ اسمه كيان. لم يكن كيان شابّاً عادياً — فقد حمل في قلبه فضولاً لا يهدأ وعينين تلألأتا كلما حلم بالسماء.</p>
-      <p>في صباحٍ ضبابيٍ، وجد كيان صندوقًا قديمًا عند جذع شجرةِ سِرو. كان الصندوق مغلقًا بقفلٍ صدئ، وعلى الغطاء نُقش غريب. حمله كيان إلى منزله، ففتحه فوجد بداخله نقشًا صغيرًا ومفتاحًا وورقةً قديمةً كُتبت عليها كلماتٍ تُنشد عن رحلة إلى مكانٍ حيث نُطقت الأحلام.</p>
-      <p>ومع مرور الأيام، قرر كيان أن يتتبع تلك العلامات. سار عبر التلال، واجتاز واديًا صغيرًا، والتقى بامرأةٍ تُدعى ليلى عرفت أسرار الغابات. أعطته خريطةً رسمها قديمًا أحد المغامرين، وقالت: «اذهب حيث التقت الريحُ بالنور».</p>
-      <p>وعند الفجر، وقف كيان على قمة تلةٍ عاليةٍ وشعر بأن الأرض نفسها أصغت. وضع المفتاح في مفترقٍ حجريٍ، وإذا بصوتٍ خفيٍ همس: «افتح قلبك فتنقشع الرؤيا». فتح الصندوق، فانبثق نورٌ رقيقٌ ملأ الحقول فراشًا من ضياء.</p>
-      <p>لم تكن الوجهة مكانًا على الخريطة؛ بل كانت لحظةً داخليةً، حيث فهم كيان أن القوة الحقيقية تكمن في الشجاعة والمسؤولية التي حملها. عاد كيان إلى بلدته مفعمًا بحكمةٍ بسيطة — أن الحلم حُفظ من خلال الأفعال اليومية، وأن لكلِّ فجرٍ قصةٌ انتظرت من يؤمن بها.</p>
-      <p>وهكذا، بقيت كلماتُ الصندوق تهمسُ في قلبه كل صباح: «انثر نورك، وتأمّل؛ فالعالم احتاج إلى أناسٍ أضاءوا بلا ضجيج».</p>
-    </article>
+      <div class="meta">الكاتب: <strong>حيدر أحمد جواد</strong> — القصة افتراضية مؤلّفة</div>
 
-    <article class="story" id="storyEnglish" lang="en" dir="ltr" style="display:none">
-      <p>In a small town surrounded by olive-covered hills, there once lived a boy named Kian. He was no ordinary youth — he carried in his heart an unyielding curiosity and his eyes sparkled whenever he dreamed of the sky.</p>
-      <p>One misty morning, Kian discovered an old box near the trunk of a cypress tree. The box was sealed with a rusty lock and bore a strange engraving. He carried it home, opened it, and found inside a tiny carving, a key, and an old scrap of paper that spoke of a journey to a place where dreams were spoken.</p>
-      <p>As days passed, Kian chose to follow the signs. He walked across the hills, crossed a small valley, and met a woman named Layla who knew the secrets of the forests. She gave him a map once drawn by an ancient traveler and told him, "Go where the wind meets the light."</p>
-      <p>At dawn, Kian stood upon a high hill and felt as if the earth itself were listening. He placed the key in a stone crevice, and a hidden voice whispered: "Open your heart and the vision will clear." He opened the box, and a soft light arose, spreading a blanket of radiance across the fields.</p>
-      <p>The destination was not a place upon the map but an inner moment — where Kian understood that true strength lay in the courage and responsibility he carried. He returned to his town filled with simple wisdom: that dreams were preserved through daily actions, and every dawn held a story waiting for believers.</p>
-      <p>And so, the box’s words whispered to his heart every morning: "Scatter your light and reflect; the world has always needed people who shine without noise."</p>
-    </article>
-  </div>
+      <div class="story-card panel" id="storyCard" aria-live="polite">
+        <article class="story" id="storyArabic">
+          <p>في بلدةٍ صغيرةٍ أحاطت بها تلالٌ مغطاةٌ بالزيتون، عاش فتىٌ اسمه كيان. لم يكن كيان شابّاً عادياً — فقد حمل في قلبه فضولاً لا يهدأ وعينين تلألأتا كلما حلم بالسماء.</p>
+          <p>في صباحٍ ضبابيٍ، وجد كيان صندوقًا قديمًا عند جذع شجرةِ سِرو. كان الصندوق مغلقًا بقفلٍ صدئ، وعلى الغطاء نُقش غريب. حمله كيان إلى منزله، ففتحه فوجد بداخله نقشًا صغيرًا ومفتاحًا وورقةً قديمةً كُتبت عليها كلماتٍ تُنشد عن رحلة إلى مكانٍ حيث نُطقت الأحلام.</p>
+          <p>ومع مرور الأيام، قرر كيان أن يتتبع تلك العلامات. سار عبر التلال، واجتاز واديًا صغيرًا، والتقى بامرأةٍ تُدعى ليلى عرفت أسرار الغابات. أعطته خريطةً رسمها قديمًا أحد المغامرين، وقالت: «اذهب حيث التقت الريحُ بالنور».</p>
+          <p>وعند الفجر، وقف كيان على قمة تلةٍ عاليةٍ وشعر بأن الأرض نفسها أصغت. وضع المفتاح في مفترقٍ حجريٍ، وإذا بصوتٍ خفيٍ همس: «افتح قلبك فتنقشع الرؤيا». فتح الصندوق، فانبثق نورٌ رقيقٌ ملأ الحقول فراشًا من ضياء.</p>
+          <p>لم تكن الوجهة مكانًا على الخريطة؛ بل كانت لحظةً داخليةً، حيث فهم كيان أن القوة الحقيقية تكمن في الشجاعة والمسؤولية التي حملها. عاد كيان إلى بلدته مفعمًا بحكمةٍ بسيطة — أن الحلم حُفظ من خلال الأفعال اليومية، وأن لكلِّ فجرٍ قصةٌ انتظرت من يؤمن بها.</p>
+          <p>وهكذا، بقيت كلماتُ الصندوق تهمسُ في قلبه كل صباح: «انثر نورك، وتأمّل؛ فالعالم احتاج إلى أناسٍ أضاءوا بلا ضجيج».</p>
+        </article>
 
-  <footer>
-    <small>عرض القصة مع واجهة تفاعلية — اضغط لتبديل اللغة.</small>
-  </footer>
-</section>
+        <article class="story" id="storyEnglish" lang="en" dir="ltr" style="display:none">
+          <p>In a small town surrounded by olive-covered hills, there once lived a boy named Kian. He was no ordinary youth — he carried in his heart an unyielding curiosity and his eyes sparkled whenever he dreamed of the sky.</p>
+          <p>One misty morning, Kian discovered an old box near the trunk of a cypress tree. The box was sealed with a rusty lock and bore a strange engraving. He carried it home, opened it, and found inside a tiny carving, a key, and an old scrap of paper that spoke of a journey to a place where dreams were spoken.</p>
+          <p>As days passed, Kian chose to follow the signs. He walked across the hills, crossed a small valley, and met a woman named Layla who knew the secrets of the forests. She gave him a map once drawn by an ancient traveler and told him, "Go where the wind meets the light."</p>
+          <p>At dawn, Kian stood upon a high hill and felt as if the earth itself were listening. He placed the key in a stone crevice, and a hidden voice whispered: "Open your heart and the vision will clear." He opened the box, and a soft light arose, spreading a blanket of radiance across the fields.</p>
+          <p>The destination was not a place upon the map but an inner moment — where Kian understood that true strength lay in the courage and responsibility he carried. He returned to his town filled with simple wisdom: that dreams were preserved through daily actions, and every dawn held a story waiting for believers.</p>
+          <p>And so, the box’s words whispered to his heart every morning: "Scatter your light and reflect; the world has always needed people who shine without noise."</p>
+        </article>
+      </div>
 
-<aside class="panel side" aria-label="لوحة التحكم">
-  <div class="author">
-    <div class="avatar">ح ع</div>
-    <div>
-      <div style="font-weight:700">حيدر أحمد جواد</div>
-      <div style="font-size:13px;color:var(--muted)">مؤلف القصة</div>
-    </div>
-  </div>
+      <footer>
+        <small>عرض القصة مع واجهة تفاعلية — اضغط لتبديل اللغة.</small>
+      </footer>
+    </section>
 
-  <div>
-    <div style="margin-bottom:8px;color:var(--muted);font-size:14px">تحكم باللغة</div>
-    <div class="lang-toggle" role="tablist" aria-label="اختيار اللغة">
-      <button class="btn" id="btnAr" role="tab" aria-selected="true">العربية</button>
-      <button class="btn" id="btnEn" role="tab" aria-selected="false">English</button>
-    </div>
-  </div>
+    <aside class="panel side" aria-label="لوحة التحكم">
+      <div class="author">
+        <div class="avatar">ح ع</div>
+        <div>
+          <div style="font-weight:700">حيدر أحمد جواد</div>
+          <div style="font-size:13px;color:var(--muted)">مؤلف القصة</div>
+        </div>
+      </div>
 
-  <div>
-    <div style="margin-bottom:8px;color:var(--muted);font-size:14px">مظهر الواجهة</div>
-    <div style="display:flex;gap:10px">
-      <button class="btn" id="btnGlow">تأثير خفيف</button>
-      <button class="btn" id="btnReset">إعادة</button>
-    </div>
-  </div>
+      <div>
+        <div style="margin-bottom:8px;color:var(--muted);font-size:14px">تحكم باللغة</div>
+        <div class="lang-toggle" role="tablist" aria-label="اختيار اللغة">
+          <button class="btn" id="btnAr" role="tab" aria-selected="true">العربية</button>
+          <button class="btn" id="btnEn" role="tab" aria-selected="false">English</button>
+        </div>
+      </div>
 
-  <div style="margin-top:auto">
-    <a href="#title" class="btn">⬆️ إلى العنوان</a>
-    <small style="color:var(--muted);display:block;margin-top:10px">حقوق مؤلف القصة محفوظة لـ حيدر أحمد جواد</small>
-  </div>
-</aside>
+      <div>
+        <div style="margin-bottom:8px;color:var(--muted);font-size:14px">مظهر الواجهة</div>
+        <div style="display:flex;gap:10px">
+          <button class="btn" id="btnGlow">تأثير خفيف</button>
+          <button class="btn" id="btnReset">إعادة</button>
+        </div>
+      </div>
 
-  </main><button id="backToTop" title="إلى الأعلى">⬆</button>
+      <div style="margin-top:auto">
+        <a href="#title" class="btn">⬆️ إلى العنوان</a>
+        <small style="color:var(--muted);display:block;margin-top:10px">حقوق مؤلف القصة محفوظة لـ حيدر أحمد جواد</small>
+      </div>
+    </aside>
+
+  </main>
+
+  <button id="backToTop" title="إلى الأعلى">⬆</button>
 
   <script>
     const btnAr = document.getElementById('btnAr');
@@ -187,7 +206,6 @@ footer{margin-top:20px;color:var(--muted);font-size:13px}
       if(e.key.toLowerCase()==='e') setLanguage('en');
     });
 
-    // زر الرجوع للأعلى
     const backToTop = document.getElementById('backToTop');
     window.addEventListener('scroll',()=>{
       if(window.scrollY > 200){
@@ -199,5 +217,6 @@ footer{margin-top:20px;color:var(--muted);font-size:13px}
     backToTop.addEventListener('click',()=>{
       window.scrollTo({top:0,behavior:'smooth'});
     });
-  </script></body>
+  </script>
+</body>
 </html>
