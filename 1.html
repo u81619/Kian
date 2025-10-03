@@ -1,244 +1,253 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>حرق الملفات على الفلاش — Burner</title>
-  <!-- خطوط من جوجل -->
-  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=El+Messiri:wght@400;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>محول الصيغ و الأدوات — 4GAMER Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js" integrity="sha512-/oXq6Xb2n2f9p6bL/3zQ4kS8dLkZ0az6h2w8JgCq3+gQq6Tn2q5t2q8Ggk8H1x9ZQqP1u2a3b4c5d6e7f8g9h==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
-    :root{--bg:#0b0b0f;--card:#0f1115;--accent:#ff6b00;--glow: 0 0 30px rgba(255,107,0,0.12)}
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent1:#7c3aed; --accent2:#06b6d4; --glass: rgba(255,255,255,0.04);
+      --glass-strong: rgba(255,255,255,0.06);
+      --text:#e6eef8;
+      font-family: 'El Messiri', sans-serif;
+    }
     *{box-sizing:border-box}
-    body{margin:0;min-height:100vh;background:radial-gradient(circle at 10% 10%, #1b0b00 0%, #070609 40%, #000 100%);font-family:'El Messiri',system-ui,Arial;color:#e9e6e6;display:flex;align-items:center;justify-content:center;padding:32px}
-    .wrap{width:980px;max-width:96%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:20px;padding:26px;box-shadow: 0 10px 40px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}/* العنوان الناري */
-.title{display:flex;align-items:center;gap:18px}
-.logo{
-  font-family:'Alfa Slab One', cursive;font-size:46px;letter-spacing:1px;color:var(--accent);position:relative;line-height:1
-}
-/* تأثير اللهب */
-.logo{background:linear-gradient(90deg,#ffef8a 0%,#ff8a00 40%,#ff1e00 70%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow: 0 2px 8px rgba(255,110,0,0.08)}
-.logo::after{content:'';position:absolute;inset:auto -8px -6px 0;border-radius:50%;filter:blur(30px);opacity:.6;background:radial-gradient(ellipse at center,#ff8a00, transparent 40%);z-index:-1;transform:translateY(6px)}
-.subtitle{color:#f4f4f4;opacity:.9;font-weight:700}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#071021 80%);color:var(--text);}
+    .container{max-width:1100px;margin:36px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;box-shadow:0 8px 30px rgba(7,12,20,.6);}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:0;color:rgba(230,238,248,0.8)}
 
-/* البطاقة */
-.card{margin-top:18px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);display:grid;grid-template-columns:1fr 360px;gap:18px}
-@media(max-width:880px){.card{grid-template-columns:1fr}}
+    /* Grid */
+    .grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px}
+    @media(min-width:980px){.grid{grid-template-columns:2fr 1fr}}
 
-/* منطقة الملفات */
-.drop{min-height:230px;border:2px dashed rgba(255,255,255,0.04);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;gap:12px}
-.drop.drag{background:linear-gradient(90deg, rgba(255,107,0,0.03), rgba(255,255,255,0.01));border-color:rgba(255,107,0,0.25)}
-.drop input{display:none}
-.btn{background:linear-gradient(90deg,var(--accent),#ff1e00);padding:10px 14px;border-radius:10px;border:none;color:#fff;font-weight:700;cursor:pointer;box-shadow:var(--glow)}
-.ghost{opacity:.85}
+    /* Card */
+    .card{background:linear-gradient(180deg,var(--card),rgba(11,18,32,0.7));border-radius:14px;padding:18px;box-shadow:0 6px 30px rgba(2,6,23,.6);border:1px solid rgba(255,255,255,0.03)}
+    .card h2{margin:0 0 8px 0}
+    .muted{color:rgba(230,238,248,0.6);font-size:14px}
 
-/* لائحة الملفات */
-.files{max-height:280px;overflow:auto;padding:8px;display:flex;flex-direction:column;gap:8px}
-.file{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:8px;background:rgba(255,255,255,0.02)}
-.file .meta{display:flex;align-items:center;gap:10px}
-.file .meta .name{font-weight:700}
-.small{font-size:13px;color:#cfcfcf;opacity:.85}
+    /* Dropzone */
+    .drop{border:2px dashed rgba(255,255,255,0.06);padding:18px;border-radius:12px;text-align:center;transition:all .25s;position:relative;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+    .drop.drag{box-shadow:0 12px 40px rgba(124,58,237,0.12);transform:translateY(-4px);border-color:rgba(124,58,237,0.45)}
+    .drop input{display:none}
+    .btn{display:inline-block;padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;font-weight:600;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(7,12,20,.6);}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px;color:var(--text);cursor:pointer}
 
-/* الشريط الأيمن */
-.side{padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));display:flex;flex-direction:column;gap:12px}
-.progress{height:14px;background:rgba(255,255,255,0.03);border-radius:10px;overflow:hidden}
-.progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#ff8a00,#ffd58a);transition:width .2s ease}
+    /* Controls */
+    .row{display:flex;gap:8px;align-items:center}
+    select,input[type=file]{background:var(--glass);border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:var(--text)}
 
-.log{background:rgba(0,0,0,0.2);padding:10px;border-radius:8px;min-height:70px;color:#fff;font-size:13px;overflow:auto}
+    /* File list */
+    .files{margin-top:12px;border-radius:10px;overflow:hidden}
+    .file-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid rgba(255,255,255,0.02)}
 
-/* زر النسخ */
-.actions{display:flex;gap:12px;flex-wrap:wrap}
+    /* Right column */
+    .tools-list{display:grid;gap:12px}
 
-/* تأثير لهب متحرك خلف البطاقة */
-.flame-bg{position:absolute;inset:auto 40px -60px;z-index:0;pointer-events:none;opacity:.12;filter:blur(40px)}
-.footer{margin-top:12px;font-size:13px;color:#cfcfcf;opacity:.9}
+    /* Fancy animation */
+    .hero{display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;background:linear-gradient(90deg, rgba(124,58,237,0.08), rgba(6,182,212,0.06));border:1px solid rgba(124,58,237,0.06)}
+    .sparkle{width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,#fff,#ffd);box-shadow:0 0 18px rgba(124,58,237,0.6);animation:float 3s ease-in-out infinite}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
 
-/* تأثير وميض للشعار */
-@keyframes flicker{0%{opacity:1;transform:translateY(0)}50%{opacity:.85;transform:translateY(-2px)}100%{opacity:1;transform:translateY(0)}}
-.logo{animation:flicker 2.2s linear infinite}
+    /* footer */
+    footer{margin-top:18px;text-align:center;color:rgba(230,238,248,0.5);font-size:13px}
 
+    /* helper */
+    .small{font-size:13px;color:rgba(230,238,248,0.7)}
+    .success{color:#86efac}
+    .danger{color:#fb7185}
+
+    /* responsive tweaks */
+    @media(max-width:420px){.logo{width:48px;height:48px}}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="title">
-      <div class="logo">Burner</div>
-      <div>
-        <div class="subtitle">حرق الملفات على الفلاش — واجهة احترافية</div>
-        <div class="small">اختر ملفاتك ثم انسخها مباشرة إلى الفلاش أو نزّلها كأرشيف</div>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">4G</div>
+        <div>
+          <h1>4GAMER Tools — محول وصيغ وضغط</h1>
+          <p class="lead">حوّل الصور، اضغط ملفات، وحول نصوص ↔ Base64 — كل شيء يعمل محلياً في المتصفح.</p>
+        </div>
       </div>
-    </div><div class="card" style="position:relative;z-index:2">
-  <div>
-    <div class="drop" id="drop">
-      <div style="text-align:center">
-        <div style="font-size:20px;font-weight:800;margin-bottom:6px">اسحب وأفلت الملفات هنا</div>
-        <div class="small">أو اضغط الزر لاختيار الملفات</div>
+      <div class="hero">
+        <div class="sparkle"></div>
+        <div class="small">واجهة احترافية • أنيميشن رهيب • بدون رفع للسيرفر</div>
       </div>
-      <input id="fileInput" type="file" multiple />
-      <div style="display:flex;gap:8px;margin-top:10px">
-        <button class="btn" id="chooseBtn">اختر ملفات</button>
-        <button class="btn ghost" id="clearBtn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff">مسح الكل</button>
-      </div>
-    </div>
+    </header>
 
-    <div class="files" id="filesList" style="margin-top:12px"></div>
+    <main class="grid">
+      <section class="card">
+        <h2>محول الصيغ - Images</h2>
+        <div class="muted">اسحب صورة هنا أو اخترها ثم حدد الصيغة والجودة لتحويلها فوراً.</div>
+
+        <div id="imgDrop" class="drop" tabindex="0">
+          <input id="imgInput" type="file" accept="image/*" multiple />
+          <div id="imgDropText">اسحب الصور هنا أو اضغط لتحميل</div>
+          <div class="files" id="imgList"></div>
+        </div>
+
+        <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <label class="small">الصيغة</label>
+          <select id="imgFormat">
+            <option value="image/png">PNG</option>
+            <option value="image/jpeg">JPG</option>
+            <option value="image/webp">WEBP</option>
+            <option value="image/bmp">BMP</option>
+          </select>
+          <label class="small">جودة (JPG/WEBP)</label>
+          <input id="imgQuality" type="range" min="0.1" max="1" step="0.05" value="0.9" />
+          <button id="convertImages" class="btn">حوّل الآن</button>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="tools-list">
+          <div>
+            <h3>ضغط الملفات (Zip)</h3>
+            <div class="muted">اختر ملفاتك ثم حمّل الأرشيف المضغوط.</div>
+            <input id="zipInput" type="file" multiple style="margin-top:8px" />
+            <div style="margin-top:8px" class="row">
+              <input id="zipName" placeholder="اسم الملف: my-files.zip" />
+              <button id="makeZip" class="btn">انشئ Zip</button>
+            </div>
+            <div id="zipStatus" class="small" style="margin-top:8px"></div>
+          </div>
+
+          <div>
+            <h3>TXT ↔ Base64</h3>
+            <div class="muted">حَمِّل ملف txt أو الصق النص وحوّله إلى Base64 والعكس.</div>
+            <textarea id="txtArea" rows="6" style="width:100%;margin-top:8px;background:var(--glass);border-radius:8px;padding:8px;color:var(--text);border:1px solid rgba(255,255,255,0.03)"></textarea>
+            <div style="margin-top:8px;display:flex;gap:8px">
+              <button id="toB64" class="btn">→ إلى Base64</button>
+              <button id="fromB64" class="ghost">← من Base64</button>
+              <label class="ghost" style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer">
+                <input id="txtFile" type="file" accept=".txt" style="display:none" />
+                تحميل TXT
+              </label>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="card" style="grid-column:1/-1;margin-top:6px">
+        <h2>سجل العمليات</h2>
+        <div id="log" class="muted" style="min-height:48px;max-height:200px;overflow:auto;padding-top:8px"></div>
+      </section>
+
+    </main>
+
+    <footer>
+      تم الإنشاء بواسطة 4GAMER Tools — يعمل بالكامل على جهازك.
+    </footer>
   </div>
 
-  <aside class="side">
-    <div>
-      <div class="small">إجمالي الملفات</div>
-      <div id="summary" style="font-weight:800;font-size:18px;margin-top:6px">0 ملف — 0 بايت</div>
-    </div>
+  <script>
+    // Helpers
+    const $ = id => document.getElementById(id);
+    const log = (t)=>{const l=$('log');l.innerHTML = (new Date()).toLocaleTimeString() + ' — ' + t + '<br>' + l.innerHTML}
 
-    <div>
-      <div class="small">التقدم</div>
-      <div class="progress"><i id="progBar"></i></div>
-    </div>
+    // Image converter
+    const imgDrop = $('imgDrop'), imgInput = $('imgInput'), imgList = $('imgList');
+    const imgFormat = $('imgFormat'), imgQuality = $('imgQuality'), convertImages = $('convertImages');
+    let images = [];
 
-    <div class="actions">
-      <button class="btn" id="writeBtn">نسخ إلى الفلاش</button>
-      <button class="btn" id="zipBtn" title="إنشاء ملف ZIP للتحميل">تحميل كأرشيف ZIP</button>
-      <button class="btn ghost" id="helpBtn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff">تعليمات</button>
-    </div>
+    function humanFileSize(size){ const i = size===0?0:Math.floor(Math.log(size)/Math.log(1024)); return (size/Math.pow(1024,i)).toFixed(2)*1 + ['B','KB','MB','GB'][i]; }
 
-    <div>
-      <div class="small">سجل الأحداث</div>
-      <div class="log" id="log"></div>
-    </div>
+    function renderImageList(){ imgList.innerHTML=''; images.forEach((f,i)=>{
+      const div = document.createElement('div'); div.className='file-item';
+      div.innerHTML = `<div style="display:flex;gap:10px;align-items:center"><strong>${f.name}</strong><div class="small">${humanFileSize(f.size)}</div></div><div><button class='ghost' data-idx='${i}'>حذف</button></div>`;
+      imgList.appendChild(div);
+    })}
 
-  </aside>
-</div>
+    imgDrop.addEventListener('click',()=>imgInput.click());
+    imgInput.addEventListener('change',(e)=>{images = images.concat(Array.from(e.target.files)); renderImageList(); log('تم اختيار صور: '+e.target.files.length)});
 
-<div class="footer">ملاحظة: لا يمتلك هذا الموقع صلاحية الوصول إلى الفلاش بدون موافقتك. عند الضغط على "نسخ إلى الفلاش" سيطلب المتصفح اختيار مجلد الفلاش (معتمد في متصفحات كروميوم).</div>
-
-  </div>  <!-- مكتبة JSZip + FileSaver من CDN (لإنشاء ZIP عند الحاجة) -->  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>  <script>
-    // عناصر
-    const drop = document.getElementById('drop');
-    const fileInput = document.getElementById('fileInput');
-    const chooseBtn = document.getElementById('chooseBtn');
-    const filesList = document.getElementById('filesList');
-    const summary = document.getElementById('summary');
-    const writeBtn = document.getElementById('writeBtn');
-    const progBar = document.getElementById('progBar');
-    const logEl = document.getElementById('log');
-    const clearBtn = document.getElementById('clearBtn');
-    const zipBtn = document.getElementById('zipBtn');
-    const helpBtn = document.getElementById('helpBtn');
-
-    let files = [];
-
-    function log(msg){
-      const time = new Date().toLocaleTimeString();
-      logEl.innerHTML = `<div>[${time}] ${msg}</div>` + logEl.innerHTML;
-    }
-
-    function updateSummary(){
-      const count = files.length;
-      const total = files.reduce((s,f)=>s+f.size,0);
-      summary.textContent = `${count} ملف — ${formatBytes(total)}`;
-    }
-
-    function formatBytes(bytes){
-      if(bytes===0) return '0 بايت';
-      const sizes = ['بايت','ك.بايت','ميجا','جيجا','تيرا'];
-      const i = Math.floor(Math.log(bytes)/Math.log(1024));
-      return (bytes/Math.pow(1024,i)).toFixed(i?2:0) + ' ' + sizes[i];
-    }
-
-    function renderFiles(){
-      filesList.innerHTML = '';
-      files.forEach((f,idx)=>{
-        const el = document.createElement('div'); el.className='file';
-        el.innerHTML = `<div class=\"meta\"><div style=\"width:40px;height:40px;border-radius:6px;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;font-weight:800\">${idx+1}</div><div style=\"min-width:120px\"><div class=\"name\">${escapeHtml(f.name)}</div><div class=\"small\">${formatBytes(f.size)}</div></div></div><div><button class=\"btn ghost\" data-idx=\"${idx}\">حذف</button></div>`;
-        filesList.appendChild(el);
-      });
-      filesList.querySelectorAll('button[data-idx]').forEach(b=>b.addEventListener('click',e=>{
-        const i = Number(e.currentTarget.dataset.idx);
-        files.splice(i,1); renderFiles(); updateSummary(); log('تم حذف الملف');
-      }));
-    }
-
-    function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-
-    // سحب وإفلات
     ['dragenter','dragover'].forEach(ev=>{
-      drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag')});
-    });
+      imgDrop.addEventListener(ev,e=>{e.preventDefault();imgDrop.classList.add('drag')})
+    })
     ['dragleave','drop'].forEach(ev=>{
-      drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag')});
-    });
-    drop.addEventListener('drop',e=>{
-      const list = Array.from(e.dataTransfer.files); addFiles(list);
-    });
+      imgDrop.addEventListener(ev,e=>{e.preventDefault();imgDrop.classList.remove('drag')})
+    })
+    imgDrop.addEventListener('drop',e=>{const dt = e.dataTransfer.files; if(dt && dt.length) {images = images.concat(Array.from(dt)); renderImageList(); log('تم أسقاط صور: '+dt.length)}})
 
-    chooseBtn.addEventListener('click',()=>fileInput.click());
-    fileInput.addEventListener('change',e=>{addFiles(Array.from(e.target.files)); fileInput.value='';});
+    imgList.addEventListener('click',e=>{if(e.target.matches('button')){const i = +e.target.dataset.idx; images.splice(i,1); renderImageList(); log('حذف صورة من القائمة')}})
 
-    clearBtn.addEventListener('click',()=>{files=[];renderFiles();updateSummary();log('تم مسح جميع الملفات')});
-
-    function addFiles(list){
-      // إزالة Dupes بنفس الاسم والحجم
-      list.forEach(f=>{
-        if(!files.some(x=>x.name===f.name && x.size===f.size)) files.push(f);
-      });
-      renderFiles(); updateSummary(); log('تم إضافة ' + list.length + ' ملف');
+    async function convertFileToFormat(file, mime, quality){
+      return new Promise((resolve, reject)=>{
+        const reader = new FileReader();
+        reader.onload = ()=>{
+          const img = new Image(); img.onload = ()=>{
+            const canvas = document.createElement('canvas'); canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+            const ctx = canvas.getContext('2d'); ctx.drawImage(img,0,0);
+            canvas.toBlob(async (blob)=>{
+              const outName = file.name.replace(/\.[^.]+$/, '') + '.' + (mime.split('/')[1] || 'out');
+              resolve({blob, name: outName});
+            }, mime, quality);
+          };
+          img.onerror = ()=>reject('فشل تحميل الصورة');
+          img.src = reader.result;
+        };
+        reader.onerror = ()=>reject('فشل قراءة الملف');
+        reader.readAsDataURL(file);
+      })
     }
 
-    // وظيفة النسخ إلى الفلاش باستخدام File System Access API
-    async function writeToFlash(){
-      if(!files.length){alert('لا توجد ملفات للنسخ');return}
-      if(!('showDirectoryPicker' in window)){
-        alert('متصفحك لا يدعم "نسخ مباشر". يمكنك تنزيل الأرشيف ZIP بدلاً من ذلك.'); return;
+    convertImages.addEventListener('click', async ()=>{
+      if(!images.length){ alert('اختَر أو اسحب صور لتحويلها'); return }
+      convertImages.disabled = true; convertImages.textContent = 'جاري التحويل...';
+      const mime = imgFormat.value; const quality = parseFloat(imgQuality.value);
+      for(let f of images){
+        try{
+          const res = await convertFileToFormat(f, mime, quality);
+          const url = URL.createObjectURL(res.blob);
+          const a = document.createElement('a'); a.href = url; a.download = res.name; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+          log('تم تحويل: '+f.name+' → '+res.name);
+        }catch(err){log('خطأ: '+err)}
       }
+      convertImages.disabled = false; convertImages.textContent = 'حوّل الآن';
+    })
 
-      try{
-        log('يرجى اختيار مجلد الفلاش (اختر جذر الفلاشة)');
-        const dirHandle = await window.showDirectoryPicker({mode:'readwrite'});
-        let done = 0; const total = files.length;
-        for(const f of files){
-          progBar.style.width = `${Math.round((done/total)*100)}%`;
-          log('إنشاء: ' + f.name);
-          const fileHandle = await dirHandle.getFileHandle(f.name, {create:true});
-          const writable = await fileHandle.createWritable();
-          // نقرأ محتوى الملف كـ ArrayBuffer ثم نكتبه
-          const ab = await f.arrayBuffer();
-          await writable.write(ab);
-          await writable.close();
-          done++;
-          progBar.style.width = `${Math.round((done/total)*100)}%`;
-        }
-        progBar.style.width = `100%`;
-        log('اكتمل النسخ!');
-        alert('تم نسخ الملفات إلى الفلاش بنجاح');
-      }catch(err){
-        console.error(err); log('خطأ: ' + (err.message||err)); alert('فشل أثناء النسخ: ' + (err.message||err));
-      }
-    }
-
-    writeBtn.addEventListener('click',writeToFlash);
-
-    // إنشاء ZIP للتحميل كحل احتياطي
-    zipBtn.addEventListener('click',async ()=>{
-      if(!files.length){alert('لا توجد ملفات لإنشاء ZIP');return}
+    // ZIP creator
+    const zipInput = $('zipInput'), makeZip = $('makeZip'), zipName = $('zipName'), zipStatus = $('zipStatus');
+    makeZip.addEventListener('click', async ()=>{
+      const files = zipInput.files; if(!files.length){ alert('اختر ملفات للضغط'); return }
+      const name = zipName.value.trim() || 'my-files.zip';
+      zipStatus.textContent = 'جاري الإنشاء...';
+      log('بدء ضغط '+files.length+' ملف(ملفات)');
       try{
         const zip = new JSZip();
-        let done=0, total=files.length;
-        for(const f of files){
-          const ab = await f.arrayBuffer();
-          zip.file(f.name, ab);
-          done++; progBar.style.width = `${Math.round((done/total)*100)}%`;
-        }
-        const blob = await zip.generateAsync({type:'blob'}, (meta)=>{
-          progBar.style.width = `${Math.round(meta.percent)}%`;
-        });
-        saveAs(blob, 'files-burner.zip');
-        log('تم إنشاء ZIP وتنزيله');
-      }catch(e){console.error(e);log('خطأ أثناء إنشاء ZIP');alert('فشل إنشاء ZIP: '+ (e.message||e));}
-    });
+        for(const f of files){ zip.file(f.name, await f.arrayBuffer()); }
+        const content = await zip.generateAsync({type:'blob'}, (meta)=>{ zipStatus.textContent = `تقدم: ${meta.percent.toFixed(0)}%` });
+        const url = URL.createObjectURL(content); const a=document.createElement('a'); a.href=url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        zipStatus.textContent = 'تم إنشاء الملف.'; log('انتهى الضغط — '+name);
+      }catch(e){ zipStatus.textContent = 'خطأ بالضغط'; log('خطأ أثناء الضغط: '+e) }
+    })
 
-    helpBtn.addEventListener('click',()=>{
-      alert(`تعليمات سريعة:\n\n1) اختر أو اسحب الملفات إلى المنطقة اليسرى.\n2) اضغط "نسخ إلى الفلاش" وسيطلب المتصفح اختيار مجلد الفلاش (اختر الجذر).\n3) إذا لم يدعم متصفحك الوصول للمجلد، استخدم زر "تحميل كأرشيف ZIP" لتنزيل الملفات ثم انسخها يدوياً إلى الفلاش.\n\nملاحظة: وظيفة "نسخ إلى الفلاش" تعمل في متصفحات كروميوم الحديثة (Chrome, Edge) فقط.`);
-    });
+    // TXT ↔ Base64
+    const txtArea = $('txtArea'), toB64 = $('toB64'), fromB64 = $('fromB64'), txtFile = $('txtFile');
+    toB64.addEventListener('click', ()=>{
+      const text = txtArea.value; if(!text){ alert('لا يوجد نص لتحويله'); return }
+      try{ const b = btoa(unescape(encodeURIComponent(text))); txtArea.value = b; log('نُفّذت: تحويل إلى Base64') }catch(e){ alert('فشل التحويل: '+e); log('فشل تحويل إلى Base64') }
+    })
+    fromB64.addEventListener('click', ()=>{
+      const b = txtArea.value; if(!b){ alert('الصق Base64 هنا'); return }
+      try{ const txt = decodeURIComponent(escape(atob(b))); txtArea.value = txt; log('نُفّذت: تحويل من Base64') }catch(e){ alert('النص ليس Base64 صالح'); log('فشل تحويل من Base64') }
+    })
+    txtFile.addEventListener('change', async (e)=>{
+      const f = e.target.files[0]; if(!f) return; const text = await f.text(); txtArea.value = text; log('تم تحميل ملف TXT: '+f.name)
+    })
 
-    // تهيئة
-    log('جاهز — أضف ملفاتك ابدأ الآن');
-  </script></body>
+    // Accessibility: keyboard drop activation
+    imgDrop.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') imgInput.click() })
+
+    log('الصفحة جاهزة');
+  </script>
+</body>
 </html>
